@@ -1,0 +1,47 @@
+{
+  "music.gloomfall.deep": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "gloomfall:music/default_cave",
+        "stream": true,
+        "volume": 2.0
+      }
+    ]
+  },
+  "music.gloomfall.glitch": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "gloomfall:master/glitch_1",
+        "stream": false,
+        "volume": 3.0
+      },
+      {
+        "name": "gloomfall:master/glitch_2",
+        "stream": false,
+        "volume": 3.0
+      }
+    ]
+  },
+  "splinter": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "gloomfall:master/splinter",
+        "stream": false,
+        "volume": 3.0
+      }
+    ]
+  },
+  "concussed": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "gloomfall:master/concussed",
+        "stream": false,
+        "volume": 1.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "gloomfall",
+  "version": "1.0.0",
+  "name": "Gloomfall",
+  "description": "Slightly overhaul hostile mobs attack on player, add deepslate ambience and significantly buff hostile mobs under deepslate level.",
+  "authors": ["NotEvenBelow"],
+  "contact": {
+     "homepage": "https://modrinth.com/mod/gloomfall",
+    "issues": "https://github.com/NotEvenBelow/Gloomfall/issues"},
+  "license": "LGPL-3.0-only",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "Gloomfall.gloomfall.client.GloomfallDataGenerator"
+    ],
+    "client": [
+      "Gloomfall.gloomfall.client.GloomfallClient"
+    ],
+    "main": [
+      "Gloomfall.gloomfall.Gloomfall"
+    ],
+    "modmenu": [
+      "Gloomfall.gloomfall.client.GloomfallModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "gloomfall.mixins.json",
+    {
+      "config": "gloomfall.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.14",
+    "fabric": ">=0.76.6",
+    "minecraft": ">=1.20"
+  },
+  "suggests": {
+    "cloth-config2": "*",
+    "modmenu": "*"
+  }
+}
