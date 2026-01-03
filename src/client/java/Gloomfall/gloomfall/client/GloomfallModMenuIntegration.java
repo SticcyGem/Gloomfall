@@ -59,11 +59,13 @@ public class GloomfallModMenuIntegration implements ModMenuApi {
             ConfigCategory customEffects = builder.getOrCreateCategory(Text.of("Mob Attack Effects"));
             buildCustomEffectsCategory(customEffects, entryBuilder, config, parent);
 
-            if (lastCategory.equals("Excluded Arenas")) builder.setFallbackCategory(arenas);
-            else if (lastCategory.equals("Deep Mob Buffs")) builder.setFallbackCategory(mobBuffs);
-            else if (lastCategory.equals("Global Mob Changes")) builder.setFallbackCategory(globalMobs);
-            else if (lastCategory.equals("Mob Attack Effects")) builder.setFallbackCategory(customEffects);
-            else builder.setFallbackCategory(general);
+            switch (lastCategory) {
+                case "Excluded Arenas" -> builder.setFallbackCategory(arenas);
+                case "Deep Mob Buffs" -> builder.setFallbackCategory(mobBuffs);
+                case "Global Mob Changes" -> builder.setFallbackCategory(globalMobs);
+                case "Mob Attack Effects" -> builder.setFallbackCategory(customEffects);
+                default -> builder.setFallbackCategory(general);
+            }
 
             return builder.build();
         };
@@ -127,6 +129,8 @@ public class GloomfallModMenuIntegration implements ModMenuApi {
                 .setDefaultValue(0.4f).setTooltip(Text.of("0.4 = -40% Healing")).setSaveConsumer(v -> config.splinteredEffectHealReduction = v).build());
         category.addEntry(entryBuilder.startBooleanToggle(Text.of("Splintered Disable Jump"), config.splinteredDisableJump)
                 .setDefaultValue(true).setSaveConsumer(v -> config.splinteredDisableJump = v).build());
+        category.addEntry(entryBuilder.startBooleanToggle(Text.of("Splintered Disable Sprint"), config.splinteredDisableSprint)
+                .setDefaultValue(true).setSaveConsumer(v -> config.splinteredDisableSprint = v).build());
 
         // --- Concussed ---
         category.addEntry(entryBuilder.startTextDescription(Text.of("§6Concussed (Creepers)")).build());
@@ -243,7 +247,7 @@ public class GloomfallModMenuIntegration implements ModMenuApi {
             zoneEntries.add(entryBuilder.startIntSlider(Text.of("Max Y"), zone.maxY, -64, 320).setDefaultValue(0).setSaveConsumer(v -> zone.maxY = v).build());
 
             zoneEntries.add(buildButtonEntry(Text.of("✚ Add Mob to Zone"), () -> {
-                zone.mobs.add(new GloomfallDeepBuff.MobStats("minecraft:zombie", 0,0,0,0,0,0,0,0, false));
+                zone.mobs.add(new GloomfallDeepBuff.MobStats("minecraft:zombie", 0,0,0,0,0,0,0,0,0, false));
                 lastCategory = "Deep Mob Buffs";
                 MinecraftClient.getInstance().setScreen(getModConfigScreenFactory().create(parent));
             }));
@@ -267,6 +271,7 @@ public class GloomfallModMenuIntegration implements ModMenuApi {
                 mobEntries.add(createPercentField(entryBuilder, "Move Speed", mob.movementSpeed, v -> mob.movementSpeed = v));
                 mobEntries.add(createPercentField(entryBuilder, "Follow Range", mob.followRange, v -> mob.followRange = v));
                 mobEntries.add(createPercentField(entryBuilder, "Reinforcements", mob.spawnReinforcements, v -> mob.spawnReinforcements = v));
+                mobEntries.add(createPercentField(entryBuilder, "Creeper Explosion Resistance", mob.explosionResistance, v -> mob.explosionResistance = v));
 
                 // Additive Fields (Flat)
                 mobEntries.add(createFlatField(entryBuilder, "Attack Knockback", mob.attackKnockback, v -> mob.attackKnockback = v));

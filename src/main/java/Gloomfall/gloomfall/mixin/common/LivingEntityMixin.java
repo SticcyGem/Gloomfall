@@ -8,9 +8,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -41,6 +44,21 @@ public class LivingEntityMixin {
         if (config == null || !config.globalMobChangeEnabled) return amount;
 
         LivingEntity victim = (LivingEntity) (Object) this;
+        if (source.isOf(DamageTypes.EXPLOSION) || source.isOf(DamageTypes.PLAYER_EXPLOSION)) {
+            if (source.getAttacker() instanceof CreeperEntity) {
+                for (String tag : victim.getCommandTags()) {
+                    if (tag.startsWith("gloomfall:expl_res_")) {
+                        try {
+                            String valueStr = tag.substring("gloomfall:expl_res_".length());
+                            float resistance = Float.parseFloat(valueStr);
+                            amount *= (1.0f - resistance);
+                        } catch (NumberFormatException ignored) {}
+                        break;
+                    }
+                }
+            }
+        }
+
         if (GloomfallEffects.VULNERABILITY != null && victim.hasStatusEffect(GloomfallEffects.VULNERABILITY)) {
             float multiplier = 1.0f + config.vulnerabilityEffectIncreaseDamageTaken;
             amount *= multiplier;
@@ -169,17 +187,19 @@ public class LivingEntityMixin {
 
         // Concussed
         if (!effectApplied && config.concussedApplyingMobs.contains(mobId)) {
-            boolean apply = false;
-            int duration = 0;
-            if (yLevel > 0) {
-                if (ThreadLocalRandom.current().nextInt(100) < config.mobGiveConcussedEffectChanceAboveY0) { apply = true; duration = config.mobGiveConcussedEffectDurationAboveY0; }
-            } else {
-                if (ThreadLocalRandom.current().nextInt(100) < config.mobGiveConcussedEffectChanceBelowY0) { apply = true; duration = config.mobGiveConcussedEffectDurationBelowY0; }
-            }
-            if (apply && GloomfallEffects.CONCUSSED != null) {
-                target.addStatusEffect(new StatusEffectInstance(GloomfallEffects.CONCUSSED, duration, 0));
-                target.getWorld().playSound(null, target.getX(), target.getY(), target.getZ(), GloomfallSoundEvents.GLOOMFALL_CONCUSSED_EVENT, SoundCategory.HOSTILE, 1.0f, 1.0f);
-                effectApplied = true;
+            if (target instanceof PlayerEntity) {
+                boolean apply = false;
+                int duration = 0;
+                if (yLevel > 0) {
+                    if (ThreadLocalRandom.current().nextInt(100) < config.mobGiveConcussedEffectChanceAboveY0) { apply = true; duration = config.mobGiveConcussedEffectDurationAboveY0; }
+                } else {
+                    if (ThreadLocalRandom.current().nextInt(100) < config.mobGiveConcussedEffectChanceBelowY0) { apply = true; duration = config.mobGiveConcussedEffectDurationBelowY0; }
+                }
+                if (apply && GloomfallEffects.CONCUSSED != null) {
+                    target.addStatusEffect(new StatusEffectInstance(GloomfallEffects.CONCUSSED, duration, 0));
+                    target.getWorld().playSound(null, target.getX(), target.getY(), target.getZ(), GloomfallSoundEvents.GLOOMFALL_CONCUSSED_EVENT, SoundCategory.HOSTILE, 1.0f, 1.0f);
+                    effectApplied = true;
+                }
             }
         }
 

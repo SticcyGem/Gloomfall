@@ -14,6 +14,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
 
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void gloomfall$tickSprintCheck(CallbackInfo ci) {
+        GloomfallConfig config = Gloomfall.getConfig();
+        if (config == null || !config.globalMobChangeEnabled) return;
+
+        PlayerEntity player = (PlayerEntity) (Object) this;
+        if (!player.isSprinting()) return;
+
+        if (config.splinteredDisableSprint && GloomfallEffects.SPLINTERED != null && player.hasStatusEffect(GloomfallEffects.SPLINTERED)) {
+            player.setSprinting(false);
+        }
+    }
+
     @Inject(method = "getMovementSpeed", at = @At("RETURN"), cancellable = true)
     private void gloomfall$reduceSpeedIfConcussed(CallbackInfoReturnable<Float> cir) {
         GloomfallConfig config = Gloomfall.getConfig();

@@ -71,11 +71,15 @@ public class MobBuffHandler {
         if (stats.grantFireResistance) {
             entity.addStatusEffect(new StatusEffectInstance(
                     StatusEffects.FIRE_RESISTANCE,
-                    Integer.MAX_VALUE,
+                    -1,
                     0,
                     false,
                     false
             ));
+        }
+
+        if (stats.explosionResistance > 0) {
+            entity.addCommandTag("gloomfall:expl_res_" + stats.explosionResistance);
         }
     }
 

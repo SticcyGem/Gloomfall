@@ -3,13 +3,14 @@
   "package": "Gloomfall.gloomfall.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "client.vanilla.ClientPlayerEntityMixin",
+    "client.vanilla.DisableCaveSoundsMixin",
+    "client.vanilla.DisableRightClickMixin",
     "client.vanilla.MusicStopMixin",
     "client.vanilla.MusicTrackerAccessor",
     "client.vanilla.SoundManagerAccessor",
     "client.vanilla.SoundSystemAccessor",
-    "client.vanilla.TickableVanillaSoundInstance",
-    "client.vanilla.DisableCaveSoundsMixin",
-    "client.vanilla.DisableRightClickMixin"
+    "client.vanilla.TickableVanillaSoundInstance"
   ],
   "injectors": {
     "defaultRequire": 1

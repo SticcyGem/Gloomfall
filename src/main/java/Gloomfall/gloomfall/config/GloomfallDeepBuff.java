@@ -21,23 +21,23 @@ public class GloomfallDeepBuff implements ConfigData {
         deepZone.maxY = 0;
 
         // 1. Zombie
-        // Attack: 35%, KB: 0.5 (Flat), Speed: 40%, Armor: 2.5, Tough: 1.0, KBRes: 0.15, Follow: 15%, Reinf: 0.15
-        deepZone.mobs.add(new MobStats("minecraft:zombie", 0.35, 0.5, 0.40, 2.5, 1.0, 0.15, 0.15, 0.15, true));
+        // Attack: 35%, KB: 0.5 (Flat), Speed: 40%, Armor: 2.5, Tough: 1.0, KBRes: 0.15, Follow: 15%, Reinf: 0.15, ExplosionRes: 0.75
+        deepZone.mobs.add(new MobStats("minecraft:zombie", 0.35, 0.5, 0.40, 2.5, 1.0, 0.15, 0.15, 0.15, 0.75, true));
 
         // 2. Skeleton
-        // Attack: 30%, KB: 0.4, Speed: 25%, Armor: 2.5, Tough: 1.0, KBRes: 0.25, Follow: 15%
-        deepZone.mobs.add(new MobStats("minecraft:skeleton", 0.30, 0.4, 0.25, 2.5, 1.0, 0.25, 0.15, 0.0, true));
+        // Attack: 30%, KB: 0.4, Speed: 25%, Armor: 2.5, Tough: 1.0, KBRes: 0.25, Follow: 15%, ExplosionRes: 0.75
+        deepZone.mobs.add(new MobStats("minecraft:skeleton", 0.30, 0.4, 0.25, 2.5, 1.0, 0.25, 0.15, 0.0, 0.75, true));
 
         // 3. Stray (Same as Skeleton)
-        deepZone.mobs.add(new MobStats("minecraft:stray", 0.30, 0.4, 0.25, 2.5, 1.0, 0.25, 0.15, 0.0, true));
+        deepZone.mobs.add(new MobStats("minecraft:stray", 0.30, 0.4, 0.25, 2.5, 1.0, 0.25, 0.15, 0.0, 0.75, true));
 
         // 4. Spider
-        // Attack: 15%, KB: 0, Speed: 50%, Armor: 2.0, Tough: 0.5, KBRes: 0.30, Follow: 20%
-        deepZone.mobs.add(new MobStats("minecraft:spider", 0.15, 0.0, 0.50, 2.0, 0.5, 0.30, 0.20, 0.0, true));
+        // Attack: 15%, KB: 0, Speed: 50%, Armor: 2.0, Tough: 0.5, KBRes: 0.30, Follow: 20%, ExplosionRes: 0.75
+        deepZone.mobs.add(new MobStats("minecraft:spider", 0.15, 0.0, 0.50, 2.0, 0.5, 0.30, 0.20, 0.0, 0.75, true));
 
         // 5. Creeper
-        // Attack: 0, KB: 0, Speed: 40%, Armor: 2.0, Tough: 0.5, KBRes: 0.25, Follow: 10%
-        deepZone.mobs.add(new MobStats("minecraft:creeper", 0.0, 0.0, 0.40, 2.0, 0.5, 0.25, 0.10, 0.0, true));
+        // Attack: 0, KB: 0, Speed: 40%, Armor: 2.0, Tough: 0.5, KBRes: 0.25, Follow: 10%, ExplosionRes: 1.0
+        deepZone.mobs.add(new MobStats("minecraft:creeper", 0.0, 0.0, 0.40, 2.0, 0.5, 0.25, 0.10, 0.0, 1.00, false));
 
         zones.add(deepZone);
     }
@@ -57,6 +57,7 @@ public class GloomfallDeepBuff implements ConfigData {
         public double movementSpeed = 0.0;       // 0.40
         public double followRange = 0.0;         // 0.15
         public double spawnReinforcements = 0.0; // 0.15
+        public double explosionResistance = 0.0; // 0.75
 
         // --- Additive Stats (Flat Value) ---
         public double attackKnockback = 0.0;
@@ -69,7 +70,7 @@ public class GloomfallDeepBuff implements ConfigData {
 
         public MobStats() {}
 
-        public MobStats(String id, double dmg, double kb, double speed, double arm, double tough, double kbRes, double follow, double reinf, boolean fire) {
+        public MobStats(String id, double dmg, double kb, double speed, double arm, double tough, double kbRes, double follow, double reinf, double explRes, boolean fire) {
             this.entityId = id;
             this.attackDamage = dmg;
             this.attackKnockback = kb;
@@ -79,6 +80,7 @@ public class GloomfallDeepBuff implements ConfigData {
             this.knockbackResistance = kbRes;
             this.followRange = follow;
             this.spawnReinforcements = reinf;
+            this.explosionResistance = explRes;
             this.grantFireResistance = fire;
         }
     }

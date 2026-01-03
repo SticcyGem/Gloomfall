@@ -4,10 +4,11 @@
   "package": "Gloomfall.gloomfall.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "entity.CreeperBuffMixin",
+    "common.EntityMixin",
     "common.LivingEntityMixin",
+    "common.PlayerEntityMixin",
     "common.SpiderEntityMixin",
-    "common.PlayerEntityMixin"
+    "entity.CreeperBuffMixin"
   ],
   "injectors": {
     "defaultRequire": 1

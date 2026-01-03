@@ -101,6 +101,9 @@ public class GloomfallConfig implements ConfigData {
     @ConfigEntry.Category("global_mob_change")
     public boolean splinteredDisableJump = true;
 
+    @ConfigEntry.Category("global_mob_change")
+    public boolean splinteredDisableSprint = false;
+
     // -- Concussed Settings --
     @ConfigEntry.Category("global_mob_change")
     public List<String> concussedApplyingMobs = new ArrayList<>(List.of("minecraft:creeper"));
