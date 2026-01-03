@@ -12,7 +12,6 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
@@ -45,15 +44,20 @@ public class LivingEntityMixin {
 
         LivingEntity victim = (LivingEntity) (Object) this;
         if (source.isOf(DamageTypes.EXPLOSION) || source.isOf(DamageTypes.PLAYER_EXPLOSION)) {
-            if (source.getAttacker() instanceof CreeperEntity) {
-                for (String tag : victim.getCommandTags()) {
-                    if (tag.startsWith("gloomfall:expl_res_")) {
-                        try {
-                            String valueStr = tag.substring("gloomfall:expl_res_".length());
-                            float resistance = Float.parseFloat(valueStr);
-                            amount *= (1.0f - resistance);
-                        } catch (NumberFormatException ignored) {}
-                        break;
+            Entity attacker = source.getAttacker();
+            if (attacker != null) {
+                String attackerId = Registries.ENTITY_TYPE.getId(attacker.getType()).toString();
+
+                if (config.concussedApplyingMobs.contains(attackerId)) {
+                    for (String tag : victim.getCommandTags()) {
+                        if (tag.startsWith("gloomfall:expl_res_")) {
+                            try {
+                                String valueStr = tag.substring("gloomfall:expl_res_".length());
+                                float resistance = Float.parseFloat(valueStr);
+                                amount *= (1.0f - resistance);
+                            } catch (NumberFormatException ignored) {}
+                            break;
+                        }
                     }
                 }
             }
